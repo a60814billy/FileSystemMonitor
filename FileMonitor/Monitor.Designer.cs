@@ -1,6 +1,6 @@
 ﻿namespace FileMonitor
 {
-    partial class Form1
+    partial class Monitor
     {
         /// <summary>
         /// 設計工具所需的變數。
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Monitor));
             this.label1 = new System.Windows.Forms.Label();
             this.directoryPathTextBox = new System.Windows.Forms.TextBox();
             this.btn_browser = new System.Windows.Forms.Button();
@@ -60,7 +60,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 31);
+            this.label1.Size = new System.Drawing.Size(83, 31);
             this.label1.TabIndex = 0;
             this.label1.Text = "Select Directory";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -70,9 +70,9 @@
             this.directoryPathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.directoryPathTextBox.Location = new System.Drawing.Point(93, 3);
+            this.directoryPathTextBox.Location = new System.Drawing.Point(92, 3);
             this.directoryPathTextBox.Name = "directoryPathTextBox";
-            this.directoryPathTextBox.Size = new System.Drawing.Size(405, 22);
+            this.directoryPathTextBox.Size = new System.Drawing.Size(403, 22);
             this.directoryPathTextBox.TabIndex = 1;
             // 
             // btn_browser
@@ -80,9 +80,9 @@
             this.btn_browser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_browser.Location = new System.Drawing.Point(504, 3);
+            this.btn_browser.Location = new System.Drawing.Point(501, 3);
             this.btn_browser.Name = "btn_browser";
-            this.btn_browser.Size = new System.Drawing.Size(74, 25);
+            this.btn_browser.Size = new System.Drawing.Size(77, 25);
             this.btn_browser.TabIndex = 2;
             this.btn_browser.Text = "Browser";
             this.btn_browser.UseVisualStyleBackColor = true;
@@ -111,7 +111,6 @@
             this.filesDataGridView.RowTemplate.Height = 24;
             this.filesDataGridView.Size = new System.Drawing.Size(581, 270);
             this.filesDataGridView.TabIndex = 3;
-            this.filesDataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.filesDataGridView_ColumnHeaderMouseClick);
             this.filesDataGridView.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.filesDataGridView_RowPrePaint);
             // 
             // dgcol_subdir
@@ -165,7 +164,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.94872F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.05128F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 79F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
             this.tableLayoutPanel1.Controls.Add(this.btn_browser, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.directoryPathTextBox, 1, 0);
@@ -177,14 +176,14 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(581, 31);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
-            // Form1
+            // Monitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(591, 315);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "Monitor";
             this.Text = "FileMonitor";
             ((System.ComponentModel.ISupportInitialize)(this.directoryWatcher)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.filesDataGridView)).EndInit();

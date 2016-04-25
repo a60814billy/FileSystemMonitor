@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
-using System.Data.Sql;
-using System.Data;
 
 namespace FileMonitor
 {
-    public partial class Form1 : Form
+    public partial class Monitor : Form
     {
         private String directoryName = "";
-        private Timer waitTimeer = new Timer();
+        private Timer waitTimer = new Timer();
         private bool dirty = false;
-        public Form1()
+        public Monitor()
         {
             InitializeComponent();
             initDirectoryWatcher();
             filesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            waitTimeer.Interval = 3000;
-            waitTimeer.Tick += WaitTimeer_Tick;
+            waitTimer.Interval = 3000;
+            waitTimer.Tick += WaitTimeer_Tick;
         }
 
         private void WaitTimeer_Tick(object sender, EventArgs e)
         {
-            waitTimeer.Enabled = false;
+            waitTimer.Enabled = false;
             if (this.dirty)
             {
                 this.listSubDirFileCounts();
@@ -40,14 +38,14 @@ namespace FileMonitor
 
         public void onDirectoryChangeed(object source, FileSystemEventArgs e)
         {
-            if (this.dirty && this.waitTimeer.Enabled) return;
-            if (this.waitTimeer.Enabled && !this.dirty)
+            if (this.dirty && this.waitTimer.Enabled) return;
+            if (this.waitTimer.Enabled && !this.dirty)
             {
                 this.dirty = true;
             }
             else
             {
-                this.waitTimeer.Enabled = true;
+                this.waitTimer.Enabled = true;
                 this.listSubDirFileCounts();
             }
         }
@@ -79,35 +77,45 @@ namespace FileMonitor
         private void listSubDirFileCounts()
         {
             filesDataGridView.Rows.Clear();
-            List<String> subdirList = new List<string>(Directory.GetDirectories(directoryName));
-            foreach (string subdirname in subdirList)
-            {
-                string pathName = Path.GetFileName(subdirname);
-                string[] files = Directory.GetFiles(subdirname, "*.*", SearchOption.AllDirectories);
-                int count = files.Length;
-                long fileSize = 0;
-                DateTime lastUpdate = new DateTime(1991, 1, 1);
 
-                foreach (string filename in files)
+            try
+            {
+                List<string> subdirList = new List<string>(Directory.GetDirectories(directoryName));
+                foreach (string subdirname in subdirList)
                 {
-                    FileInfo info = new FileInfo(filename);
-                    fileSize += info.Length;
-                    if (lastUpdate.CompareTo(info.LastWriteTime) <= 0)
+                    string pathName = Path.GetFileName(subdirname);
+                    string[] files = Directory.GetFiles(subdirname, "*.*", SearchOption.AllDirectories);
+                    int count = files.Length;
+                    long fileSize = 0;
+                    DateTime lastUpdate = new DateTime(1911, 1, 1);
+
+                    foreach (string filename in files)
                     {
-                        lastUpdate = info.LastWriteTime;
+                        FileInfo info = new FileInfo(filename);
+                        fileSize += info.Length;
+                        if (lastUpdate.CompareTo(info.LastWriteTime) <= 0)
+                        {
+                            lastUpdate = info.LastWriteTime;
+                        }
                     }
+                    filesDataGridView.Rows.Add(new Object[] { pathName, count, humanReadable(fileSize), lastUpdate });
                 }
-                filesDataGridView.Rows.Add(new Object[] { pathName, count, humanReadable(fileSize), lastUpdate });
-                if (filesDataGridView.SortedColumn != null)
+            }
+            catch (Exception e)
+            {
+                directoryWatcher.EnableRaisingEvents = false;
+                MessageBox.Show("偵測到系統異常，系統已停止監控檔案" + Environment.NewLine + "錯誤訊息：" + e.Message);
+            }
+
+            if (filesDataGridView.SortedColumn != null)
+            {
+                if (filesDataGridView.SortOrder == SortOrder.Ascending)
                 {
-                    if (filesDataGridView.SortOrder == SortOrder.Ascending)
-                    {
-                        filesDataGridView.Sort(filesDataGridView.SortedColumn, System.ComponentModel.ListSortDirection.Ascending);
-                    }
-                    else
-                    {
-                        filesDataGridView.Sort(filesDataGridView.SortedColumn, System.ComponentModel.ListSortDirection.Descending);
-                    }
+                    filesDataGridView.Sort(filesDataGridView.SortedColumn, System.ComponentModel.ListSortDirection.Ascending);
+                }
+                else
+                {
+                    filesDataGridView.Sort(filesDataGridView.SortedColumn, System.ComponentModel.ListSortDirection.Descending);
                 }
             }
         }
@@ -116,6 +124,7 @@ namespace FileMonitor
         {
             try
             {
+                // if fileCount equal zero, set the row backgroup to red 
                 if ((int)(filesDataGridView.Rows[e.RowIndex].Cells[1].Value) == 0)
                 {
                     DataGridViewRow row = filesDataGridView.Rows[e.RowIndex];
@@ -127,6 +136,7 @@ namespace FileMonitor
 
         private string humanReadable(long len)
         {
+            //from:http://stackoverflow.com/questions/281640/how-do-i-get-a-human-readable-file-size-in-bytes-abbreviation-using-net
             string[] sizes = { "B", "KB", "MB", "GB" };
             int order = 0;
             while (len >= 1024 && order + 1 < sizes.Length)
@@ -139,11 +149,6 @@ namespace FileMonitor
             // show a single decimal place, and no space.
             string result = String.Format("{0:0.##} {1}", len, sizes[order]);
             return result;
-        }
-
-        private void filesDataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-
         }
     }
 }
